@@ -1,0 +1,28 @@
+{
+  "name": "ng-c3",
+  "version": "0.0.1",
+  "homepage": "https://github.com/carlosmontes002/ng-c3",
+  "authors": [
+    "carlosmontes002 <carlosmontes002@gmail.com>"
+  ],
+  "description": "Re-Build of c3-angularjs-directives",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "c3",
+    "c3.js",
+    "c3-angularjs-directives",
+    "c3",
+    "angularjs",
+    "c3-directives"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
