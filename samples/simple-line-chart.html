@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../bower_components/angularjs/angular.min.js"></script>
+    <script src="../bower_components/lodash/dist/lodash.min.js"></script>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../bower_components/c3/c3.min.js"></script>
+    <script src="../directive/ngC3.js"></script>
+    <link rel="stylesheet" href="../bower_components/c3/c3.css"/>
+</head>
+<body ng-app="ngC3">
+    <script>
+        function MyCtrl ($scope) {
+            $scope.chart = {
+                series: [
+                    {
+                        name: "Tweets",
+                        type: "line",
+                        data: [{x: 10, y: 4}, {x: 14, y: 32}]
+                    },
+                    {
+                        name: "rTweets",
+                        type: "line",
+                        data: [{x: 10, y: 4}, {x: 12, y: 3}]
+                    }
+                ]
+            };
+        }
+    </script>
+    <div ng-controller="MyCtrl">
+        <ng-c3 chart-id="chart1" series="chart.series" options="chart.options"></ng-c3>
+        <button ng-click="press()">PRESS</button>
+    </div>
+</body>
+</html>
