@@ -12,26 +12,43 @@
 </head>
 <body ng-app="ngC3">
     <script>
-        function MyCtrl ($scope) {
+        function MyCtrl ($scope, $timeout) {
             $scope.chart = {
+                options: {
+                    point: {
+                        show: false
+                    }
+                },
                 series: [
                     {
-                        name: "Tweets",
-                        type: "line",
-                        data: [{x: 10, y: 4}, {x: 14, y: 32}]
+                        name: "Data 1",
+                        data: [{x: 1, y: 1}, {x: 2, y: 2}, {x: 3, y: 3}, {x: 4, y: 4}, {x: 5, y: 5}, {x: 6, y: 6}, {x: 7, y: 7}]
                     },
                     {
-                        name: "rTweets",
-                        type: "line",
-                        data: [{x: 10, y: 4}, {x: 12, y: 3}]
+                        name: "Data 2",
+                        data: [{x: 1, y: 2}, {x: 2, y: 4}, {x: 3, y: 6}, {x: 4, y: 8}, {x: 5, y: 10}, {x: 6, y: 12}, {x: 7, y: 14}]
+                    },
+                    {
+                        name: "Data 3",
+                        data: [{x: 1, y: 3}, {x: 2, y: 6}, {x: 3, y: 9}, {x: 4, y: 12}, {x: 5, y: 15}, {x: 6, y: 18}, {x: 7, y: 21}]
                     }
                 ]
-            };
+            }
+
+            $timeout(function () {
+                $scope.chart.series.splice(1, 1);
+            }, 5000);
+
+            $timeout(function () {
+               $scope.chart.series.push({
+                   name: "Data 4",
+                   data: [{x: 1, y: 2}, {x: 2, y: 4}, {x: 3, y: 6}, {x: 4, y: 8}, {x: 5, y: 10}, {x: 6, y: 12}, {x: 7, y: 14}]
+               });
+            }, 10000);
         }
     </script>
     <div ng-controller="MyCtrl">
         <ng-c3 chart-id="chart1" series="chart.series" options="chart.options"></ng-c3>
-        <button ng-click="press()">PRESS</button>
     </div>
 </body>
 </html>
