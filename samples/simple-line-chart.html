@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title></title>
     <script src="../bower_components/angularjs/angular.min.js"></script>
-    <script src="../bower_components/lodash/dist/lodash.min.js"></script>
     <script src="../bower_components/d3/d3.min.js"></script>
     <script src="../bower_components/c3/c3.min.js"></script>
     <script src="../directive/ng-c3.js"></script>
@@ -33,22 +32,34 @@
                         data: [{x: 1, y: 3}, {x: 2, y: 6}, {x: 3, y: 9}, {x: 4, y: 12}, {x: 5, y: 15}, {x: 6, y: 18}, {x: 7, y: 21}]
                     }
                 ]
-            }
+            };
+
+            var series = $scope.chart.series;
 
             $timeout(function () {
-                $scope.chart.series.splice(1, 1);
+                series[0].data = [{x: 1, y: 13}, {x: 2, y: 16}];
             }, 5000);
 
             $timeout(function () {
-               $scope.chart.series.push({
+                series.push({
                    name: "Data 4",
-                   data: [{x: 1, y: 2}, {x: 2, y: 4}, {x: 3, y: 6}, {x: 4, y: 8}, {x: 5, y: 10}, {x: 6, y: 12}, {x: 7, y: 14}]
+                   data: [{x: 1, y: 12}, {x: 2, y: 14}, {x: 3, y: 16}, {x: 4, y: 18}, {x: 5, y: 11}, {x: 6, y: 12}, {x: 7, y: 14}]
                });
             }, 10000);
+
+            $timeout(function () {
+                $scope.chart.options["transform"] = "pie";
+            }, 15000);
+
+            $timeout(function () {
+                $scope.chart.options["transform"] = "donut";
+                $scope.chart.options["donut"] = {title: "Hello C3"};
+            }, 20000);
         }
     </script>
     <div ng-controller="MyCtrl">
         <ng-c3 chart-id="chart1" series="chart.series" options="chart.options"></ng-c3>
+        <button ng-click="press()">press</button>
     </div>
 </body>
 </html>

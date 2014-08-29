@@ -3,19 +3,33 @@
 angular.module("ngC3", [])
     .directive("ngC3", function () {
 
-        function isEmptyJSON(obj) {
-            for (var i in obj) {
+        function isEmptyJSON(json) {
+            for (var attr in json) {
                 return false;
             }
             return true;
+        }
+
+        function pluck(arrayObject, attr) {
+            return arrayObject.map(function (el) {
+               return el[attr];
+            });
+        }
+
+        function merge (firstObject, secondObject) {
+            for (var attr in secondObject) {
+                if (!firstObject.hasOwnProperty(attr)) {
+                    firstObject[attr] = secondObject[attr];
+                }
+            }
         }
 
         function getData(series) {
             var xs = [];
             var types = {};
             var columns = [];
-            var _x = [];
-            var _y = [];
+            var x = [];
+            var y = [];
             var yAxis = {};
 
             series.forEach(function (serie) {
@@ -29,19 +43,19 @@ angular.module("ngC3", [])
 
                 xs[serie.name] = "x" + serie.name;
 
-                _x = _.pluck(serie.data, "x");
-                _y = _.pluck(serie.data, "y");
+                x = pluck(serie.data, "x");
+                y = pluck(serie.data, "y");
 
-                _x.unshift("x" + serie.name);
-                _y.unshift(serie.name);
+                x.unshift("x" + serie.name);
+                y.unshift(serie.name);
 
-                columns.push.apply(columns, [_x, _y]);
+                columns.push.apply(columns, [x, y]);
             });
 
             var data = {
                 columns: columns,
                 xs: xs
-            }
+            };
 
             if (!isEmptyJSON(types)) {
                 data["types"] = types;
@@ -58,7 +72,9 @@ angular.module("ngC3", [])
             var columns = [];
 
             series.forEach(function (serie) {
-                var data = _.clone(serie.data);
+                var data = serie.data.map(function (el) {
+                    return el;
+                });
                 data.unshift(serie.name);
                 columns.push(data);
             });
@@ -78,11 +94,11 @@ angular.module("ngC3", [])
                 var chartElement = element[0].childNodes[0];
                 chartElement.id = scope.chartId;
 
-                scope.$watch("[series, options]", function (newChanges) {
-                    newChanges[1] = newChanges[1] ? newChanges[1] : {};
-                    var transform = newChanges[1].transform ? newChanges[1].transform : null;
+                scope.$watch("[series, options]", function (changes) {
+                    changes[1] = changes[1] ? changes[1] : {};
+                    var transform = changes[1].transform ? changes[1].transform : null;
                     var body = {};
-                    var typeChart = newChanges[1].type ? newChanges[1].type : "other";
+                    var typeChart = changes[1].type ? changes[1].type : "other";
 
                     switch (typeChart) {
                         case "donut":
@@ -90,15 +106,15 @@ angular.module("ngC3", [])
                         case "gauge":
                             body["data"] = {
                                 type: typeChart,
-                                columns: getPiesData(newChanges[0])
+                                columns: getPiesData(changes[0])
                             };
                             break;
                         default:
-                            body["data"] = getData(newChanges[0]);
+                            body["data"] = getData(changes[0]);
 
-                            if (newChanges[1]) {
-                                _.merge(body, newChanges[1]);
-                                body.data["groups"] = newChanges[1].groups ? newChanges[1].groups : [];
+                            if (changes[1]) {
+                                merge(body, changes[1]);
+                                body.data["groups"] = changes[1].groups ? changes[1].groups : [];
                             }
                             break;
                     }
