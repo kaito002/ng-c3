@@ -108,6 +108,7 @@ angular.module("ngC3", [])
                                 type: typeChart,
                                 columns: getPiesData(changes[0])
                             };
+                            merge(body, changes[1]);
                             break;
                         default:
                             body["data"] = getData(changes[0]);
@@ -118,6 +119,7 @@ angular.module("ngC3", [])
                             }
                             break;
                     }
+                    console.log("body: ", body);
                     body["bindto"] = scope.chartId ? "#" + scope.chartId : "#chart";
                     var chart = c3.generate(body);
 
