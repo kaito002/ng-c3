@@ -46,20 +46,10 @@
                    data: [{x: 1, y: 12}, {x: 2, y: 14}, {x: 3, y: 16}, {x: 4, y: 18}, {x: 5, y: 11}, {x: 6, y: 12}, {x: 7, y: 14}]
                });
             }, 10000);
-
-            $timeout(function () {
-                $scope.chart.options["transform"] = "pie";
-            }, 15000);
-
-            $timeout(function () {
-                $scope.chart.options["transform"] = "donut";
-                $scope.chart.options["donut"] = {title: "Hello C3"};
-            }, 20000);
         }
     </script>
     <div ng-controller="MyCtrl">
         <ng-c3 chart-id="chart1" series="chart.series" options="chart.options"></ng-c3>
-        <button ng-click="press()">press</button>
     </div>
 </body>
 </html>
