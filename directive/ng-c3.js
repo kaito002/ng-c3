@@ -119,7 +119,6 @@ angular.module("ngC3", [])
                             }
                             break;
                     }
-                    console.log("body: ", body);
                     body["bindto"] = scope.chartId ? "#" + scope.chartId : "#chart";
                     var chart = c3.generate(body);
 
