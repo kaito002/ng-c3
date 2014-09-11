@@ -43,8 +43,17 @@ angular.module("ngC3", [])
 
                 xs[serie.name] = "x" + serie.name;
 
-                x = pluck(serie.data, "x");
-                y = pluck(serie.data, "y");
+                if (serie.data[0] instanceof Array) {
+                    x = serie.data.map(function (el) {
+                        return el[0];
+                    });
+                    y = serie.data.map(function (el) {
+                        return el[1];
+                    });
+                } else {
+                    x = pluck(serie.data, "x");
+                    y = pluck(serie.data, "y");
+                }
 
                 x.unshift("x" + serie.name);
                 y.unshift(serie.name);
