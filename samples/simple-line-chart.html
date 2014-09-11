@@ -14,8 +14,11 @@
         function MyCtrl ($scope, $timeout) {
             $scope.chart = {
                 options: {
-                    point: {
-                        show: false
+//                    point: {
+//                        show: false
+//                    },
+                    onclick : function (point) {
+                        console.log("point: ", point);
                     }
                 },
                 series: [

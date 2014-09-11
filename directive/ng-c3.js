@@ -125,6 +125,7 @@ angular.module("ngC3", [])
                             if (changes[1]) {
                                 merge(body, changes[1]);
                                 body.data["groups"] = changes[1].groups ? changes[1].groups : [];
+                                body.data["onclick"] = changes[1].onclick ? changes[1].onclick : function () {};
                             }
                             break;
                     }
