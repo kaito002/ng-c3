@@ -57,13 +57,24 @@ angular.module("ngC3", [])
 
                 x.unshift("x" + serie.name);
                 y.unshift(serie.name);
-
-                columns.push.apply(columns, [x, y]);
+                columns.push.apply(columns, [y]);
+//                columns.push.apply(columns, [x, y]);
             });
+            var _x = [];
+            if (series[0].data[0] instanceof Array) {
+                _x = series[0].data.map(function (el) {
+                    return el[0];
+                });
+            } else {
+                _x = pluck(series[0].data, "x");
+            }
+            _x.unshift("x");
+            columns.push.apply(columns, [_x]);
 
             var data = {
-                columns: columns,
-                xs: xs
+                x: 'x',
+                columns: columns
+//                xs: xs
             };
 
             if (!isEmptyJSON(types)) {
@@ -126,12 +137,12 @@ angular.module("ngC3", [])
                                 merge(body, changes[1]);
                                 body.data["groups"] = changes[1].groups ? changes[1].groups : [];
                                 body.data["onclick"] = changes[1].onclick ? changes[1].onclick : function () {};
+                                body.data["type"] = typeChart !== "other" ? typeChart : "line";
                             }
                             break;
                     }
                     body["bindto"] = scope.chartId ? "#" + scope.chartId : "#chart";
                     var chart = c3.generate(body);
-
                     if (transform) { chart.transform(transform); }
                 }, true);
             }
