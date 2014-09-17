@@ -32,6 +32,12 @@ angular.module("ngC3", [])
             var y = [];
             var yAxis = {};
 
+            if (!series.length){
+                return {
+                    columns: []
+                }
+            }
+
             series.forEach(function (serie) {
                 if (serie.yAxis) {
                     yAxis[serie.name] = serie.yAxis;
