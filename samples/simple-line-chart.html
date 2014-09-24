@@ -61,7 +61,9 @@
             var series = $scope.chart.series;
 
             $timeout(function () {
-                series[0].data = [[ 1,  13], [ 2,  16]];
+                $scope.chart.options.regions = {
+                    "Data 1": [{"end": 1e100}]
+                }
             }, 5000);
 
             $timeout(function () {

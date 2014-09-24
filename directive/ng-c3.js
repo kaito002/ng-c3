@@ -144,6 +144,7 @@ angular.module("ngC3", [])
                                 body.data["groups"] = changes[1].groups ? changes[1].groups : [];
                                 body.data["onclick"] = changes[1].onclick ? changes[1].onclick : function () {};
                                 body.data["type"] = typeChart !== "other" ? typeChart : "line";
+                                body.data["regions"] = changes[1].regions ? changes[1].regions : [];
                             }
                             break;
                     }
