@@ -6,14 +6,18 @@
     <script src="../bower_components/angularjs/angular.min.js"></script>
     <script src="../bower_components/d3/d3.min.js"></script>
     <script src="../bower_components/c3/c3.min.js"></script>
-    <script src="../directive/ng-c3.js"></script>
+    <script src="../dist/ng-c3.js"></script>
     <link rel="stylesheet" href="../bower_components/c3/c3.css"/>
+    <link rel="stylesheet" href="../dist/ngc3.css"/>
 </head>
 <body ng-app="ngC3">
     <script>
         function MyCtrl ($scope, $timeout) {
             $scope.chart = {
                 options: {
+                    error: {
+                      status: false
+                    },
 //                    point: {
 //                        show: false
 //                    },
@@ -64,18 +68,20 @@
                 $scope.chart.options.regions = {
                     "Data 1": [{"end": 1e100}]
                 }
-            }, 5000);
+            }, 1000);
 
             $timeout(function () {
-                series.push({
-                   name: "Data 4",
-                   data: [[ 1,  12], [ 2,  14], [ 3,  16], [ 4,  18], [ 5,  11], [ 6,  12], [ 7,  14]]
-               });
-            }, 10000);
+                $scope.chart.options.error.status = true;
+            }, 2000);
+
+            $timeout(function () {
+                $scope.chart.options.error.status = false;
+            }, 5000);
         }
     </script>
-    <div ng-controller="MyCtrl">
+    <div ng-controller="MyCtrl" style="width: 400px; height: 350px;">
         <ng-c3 chart-id="chart1" series="chart.series" options="chart.options"></ng-c3>
     </div>
+    
 </body>
 </html>

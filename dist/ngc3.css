@@ -1,0 +1,21 @@
+.chart-container {
+    position: relative;
+}
+
+.ng-c3-error {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #FC5C5C;
+}
+
+.ng-c3-error > p {
+    top: 35%;
+    position: relative;
+    text-align: center;
+    font-size: x-large;
+    font-family: Helvetica Neue, Helvetica, Arial;
+    color: #ffffff;
+}

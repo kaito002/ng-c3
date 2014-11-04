@@ -109,7 +109,7 @@ angular.module("ngC3", [])
 
         return {
             restrict: "AE",
-            template: "<div></div>",
+            template: "<div class='chart-container'><div></div><div class='ng-c3-error'><p></p></div></div>",
             scope: {
                 series: "=",
                 options: "=",
@@ -117,40 +117,51 @@ angular.module("ngC3", [])
             },
             link: function (scope, element) {
 
-                var chartElement = element[0].childNodes[0];
+                var chartElement = element[0].childNodes[0].childNodes[0],
+                    errorPanel = element[0].childNodes[0].childNodes[1],
+                    errorText = errorPanel.childNodes[0];
                 chartElement.id = scope.chartId;
 
+
                 scope.$watch("[series, options]", function (changes) {
-                    changes[1] = changes[1] ? changes[1] : {};
-                    var transform = changes[1].transform ? changes[1].transform : null;
+                    changes[1] = changes[1] || {};
+                    var transform = changes[1].transform || null;
                     var body = {};
-                    var typeChart = changes[1].type ? changes[1].type : "other";
+                    var typeChart = changes[1].type || "other";
+                    var error = changes[1].error || {status: false};
 
-                    switch (typeChart) {
-                        case "donut":
-                        case "pie":
-                        case "gauge":
-                            body["data"] = {
-                                type: typeChart,
-                                columns: getPiesData(changes[0])
-                            };
-                            merge(body, changes[1]);
-                            break;
-                        default:
-                            body["data"] = getData(changes[0]);
-
-                            if (changes[1]) {
+                    if (error.status) {
+                        errorPanel.style.opacity = 1;
+                        errorText.innerHTML = error.message || "Something its Wrong!";
+                    } else {
+                        errorPanel.style.opacity = 0;
+                        switch (typeChart) {
+                            case "donut":
+                            case "pie":
+                            case "gauge":
+                                body["data"] = {
+                                    type: typeChart,
+                                    columns: getPiesData(changes[0])
+                                };
                                 merge(body, changes[1]);
-                                body.data["groups"] = changes[1].groups ? changes[1].groups : [];
-                                body.data["onclick"] = changes[1].onclick ? changes[1].onclick : function () {};
-                                body.data["type"] = typeChart !== "other" ? typeChart : "line";
-                                body.data["regions"] = changes[1].regions ? changes[1].regions : [];
-                            }
-                            break;
+                                break;
+                            default:
+                                body["data"] = getData(changes[0]);
+
+                                if (changes[1]) {
+                                    merge(body, changes[1]);
+                                    body.data["groups"] = changes[1].groups ? changes[1].groups : [];
+                                    body.data["onclick"] = changes[1].onclick ? changes[1].onclick : function () {};
+                                    body.data["type"] = typeChart !== "other" ? typeChart : "line";
+                                    body.data["regions"] = changes[1].regions ? changes[1].regions : [];
+                                }
+                                break;
+                        }
+                        body["bindto"] = scope.chartId ? "#" + scope.chartId : "#chart";
+                        var chart = c3.generate(body);
+                        if (transform) { chart.transform(transform); }
                     }
-                    body["bindto"] = scope.chartId ? "#" + scope.chartId : "#chart";
-                    var chart = c3.generate(body);
-                    if (transform) { chart.transform(transform); }
+
                 }, true);
             }
         }
