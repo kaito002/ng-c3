@@ -8,11 +8,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #FC5C5C;
+    background-color: #000000;
 }
 
 .ng-c3-error > p {
-    top: 35%;
+    top: 40%;
     position: relative;
     text-align: center;
     font-size: x-large;

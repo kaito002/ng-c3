@@ -120,8 +120,8 @@ angular.module("ngC3", [])
                 var chartElement = element[0].childNodes[0].childNodes[0],
                     errorPanel = element[0].childNodes[0].childNodes[1],
                     errorText = errorPanel.childNodes[0];
-                chartElement.id = scope.chartId;
 
+                chartElement.id = scope.chartId;
 
                 scope.$watch("[series, options]", function (changes) {
                     changes[1] = changes[1] || {};
@@ -131,7 +131,7 @@ angular.module("ngC3", [])
                     var error = changes[1].error || {status: false};
 
                     if (error.status) {
-                        errorPanel.style.opacity = 1;
+                        errorPanel.style.opacity = 0.3;
                         errorText.innerHTML = error.message || "Something its Wrong!";
                     } else {
                         errorPanel.style.opacity = 0;
