@@ -109,7 +109,7 @@ angular.module("ngC3", [])
 
         return {
             restrict: "AE",
-            template: "<div class='chart-container'><div></div><div class='ng-c3-error'><p></p></div></div>",
+            template: "<div class='chart-container'><div class='ng-c3-error'><p></p></div><div></div></div>",
             scope: {
                 series: "=",
                 options: "=",
@@ -117,8 +117,8 @@ angular.module("ngC3", [])
             },
             link: function (scope, element) {
 
-                var chartElement = element[0].childNodes[0].childNodes[0],
-                    errorPanel = element[0].childNodes[0].childNodes[1],
+                var chartElement = element[0].childNodes[0].childNodes[1],
+                    errorPanel = element[0].childNodes[0].childNodes[0],
                     errorText = errorPanel.childNodes[0];
 
                 chartElement.id = scope.chartId;
@@ -133,6 +133,7 @@ angular.module("ngC3", [])
                     if (error.status) {
                         errorPanel.style.opacity = 0.3;
                         errorText.innerHTML = error.message || "Something its Wrong!";
+                        body["data"] = { columns: [] }
                     } else {
                         errorPanel.style.opacity = 0;
                         switch (typeChart) {
@@ -157,10 +158,11 @@ angular.module("ngC3", [])
                                 }
                                 break;
                         }
-                        body["bindto"] = scope.chartId ? "#" + scope.chartId : "#chart";
-                        var chart = c3.generate(body);
-                        if (transform) { chart.transform(transform); }
                     }
+
+                    body["bindto"] = scope.chartId ? "#" + scope.chartId : "#chart";
+                    var chart = c3.generate(body);
+                    if (transform) { chart.transform(transform); }
 
                 }, true);
             }
