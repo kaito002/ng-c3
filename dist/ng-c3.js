@@ -132,7 +132,7 @@ angular.module("ngC3", [])
 
                     if (error.status) {
                         errorPanel.style.opacity = 0.3;
-                        errorText.innerHTML = error.message || "Something its Wrong!";
+                        errorText.innerHTML = error.message || "Something is Wrong!";
                         body["data"] = { columns: [] }
                     } else {
                         errorPanel.style.opacity = 0;
