@@ -28,6 +28,6 @@
   "dependencies": {
     "angularjs": "~1.3.x",
     "bootstrap": "~3.x.0",
-    "c3": "~0.4.3"
+    "c3": "~0.4.2"
   }
 }
