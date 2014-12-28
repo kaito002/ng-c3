@@ -6,12 +6,14 @@
     <script src="../bower_components/angularjs/angular.min.js"></script>
     <script src="../bower_components/d3/d3.min.js"></script>
     <script src="../bower_components/c3/c3.min.js"></script>
-    <script src="../directive/ng-c3.js"></script>
+    <script src="../dist/ng-c3.js"></script>
     <link rel="stylesheet" href="../bower_components/c3/c3.css"/>
 </head>
 <body ng-app="ngC3">
     <script>
-        function MyCtrl ($scope, $timeout) {
+        angular.module("ngC3")
+                .controller("MyCtrl", ["$scope", "$timeout",
+        function ($scope, $timeout) {
             $scope.chart = {
                 options: {
 //                    point: {
@@ -19,12 +21,13 @@
 //                    },
                     onclick : function (point) {
                         console.log("point: ", point);
-                    }
+                    },
+                    type: "line" // you can omit this, the default chart is line
                 },
                 series: [
                     {
                         name: "Data 1",
-                        data: [{x: 1, y: 1}, {x: 2, y: 2}, {x: 3, y: 3}, {x: 4, y: 4}, {x: 5, y: 5}, {x: 6, y: 6}, {x: 7, y: 7}]
+                        data: [[ 1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7]]
                     },
                     {
                         name: "Data 2",
@@ -36,27 +39,6 @@
                     }
                 ]
             };
-//            $scope.chart = {
-//                options: {
-//                    point: {
-//                        show: false
-//                    }
-//                },
-//                series: [
-//                    {
-//                        name: "Data 1",
-//                        data: [[ 1,  1], [ 2,  2], [ 3,  3], [ 4,  4], [ 5,  5], [ 6,  6], [ 7,  7]]
-//                    },
-//                    {
-//                        name: "Data 2",
-//                        data: [[ 1,  2], [ 2,  4], [ 3,  6], [ 4,  8], [ 5,  10], [ 6,  12], [ 7,  14]]
-//                    },
-//                    {
-//                        name: "Data 3",
-//                        data: [[ 1,  3], [ 2,  6], [ 3,  9], [ 4,  12], [ 5,  15], [ 6,  18], [ 7,  21]]
-//                    }
-//                ]
-//            };
 
             var series = $scope.chart.series;
 
@@ -70,7 +52,7 @@
                    data: [[ 1,  12], [ 2,  14], [ 3,  16], [ 4,  18], [ 5,  11], [ 6,  12], [ 7,  14]]
                });
             }, 10000);
-        }
+        }]);
     </script>
     <div ng-controller="MyCtrl">
         <ng-c3 chart-id="chart1" series="chart.series" options="chart.options"></ng-c3>
