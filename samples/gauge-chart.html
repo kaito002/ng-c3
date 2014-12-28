@@ -6,12 +6,14 @@
     <script src="../bower_components/angularjs/angular.min.js"></script>
     <script src="../bower_components/d3/d3.min.js"></script>
     <script src="../bower_components/c3/c3.min.js"></script>
-    <script src="../directive/ng-c3.js"></script>
+    <script src="../dist/ng-c3.js"></script>
     <link rel="stylesheet" href="../bower_components/c3/c3.css"/>
 </head>
 <body ng-app="ngC3">
 <script>
-    function MyCtrl ($scope, $timeout) {
+    angular.module("ngC3")
+            .controller("MyCtrl", ["$scope", "$timeout",
+                function ($scope, $timeout) {
         $scope.chart = {
             options: {
                 type: "gauge"
@@ -23,7 +25,7 @@
                 }
             ]
         };
-    }
+                }]);
 </script>
 <div ng-controller="MyCtrl">
     <ng-c3 chart-id="chart1" series="chart.series" options="chart.options"></ng-c3>

@@ -12,7 +12,13 @@ angular.module("ngC3", [])
 
         function pluck(arrayObject, attr) {
             return arrayObject.map(function (el) {
-               return el[attr];
+                if(!el.hasOwnProperty(attr)) {
+                    console.error("Inconsistent Data");
+                    console.error("Verify your data, must be like one of these options \n" +
+                    "data = [{x: value, y: value},...,{x: value, y: value}] \n" +
+                    "or data = [[valueX, valueY],...,[valueX, valueY]]");
+                }
+                return el[attr];
             });
         }
 
@@ -24,41 +30,39 @@ angular.module("ngC3", [])
             }
         }
 
-        function getData(series) {
-            var xs = [];
-            var types = {};
-            var columns = [];
-            var x = [];
-            var y = [];
-            var yAxis = {};
+        function getData (series) {
+            var xs = {},
+            types = {},
+            columns = [],
+            x = [],
+            y = [],
+            yAxis = {};
 
-            series.forEach(function (serie) {
-                if (serie.yAxis) {
-                    yAxis[serie.name] = serie.yAxis;
-                }
+            series.forEach(function (s) {
+                if (s.yAxis) yAxis[s.name] = s.yAxis;
 
-                if (serie.type) {
-                    types[serie.name] = serie.type;
-                }
+                if (s.type) types[s.name] = s.type;
 
-                xs[serie.name] = "x" + serie.name;
+                xs[s.name] = "x" + s.name;
 
-                if (serie.data[0] instanceof Array) {
-                    x = serie.data.map(function (el) {
-                        return el[0];
-                    });
-                    y = serie.data.map(function (el) {
-                        return el[1];
-                    });
+                if (s.data[0] instanceof Array) {
+                    x = pluck(s.data, 0);
+                    y = pluck(s.data, 1);
+                } else if (s.data[0] instanceof Object){
+                    x = pluck(s.data, "x");
+                    y = pluck(s.data, "y");
                 } else {
-                    x = pluck(serie.data, "x");
-                    y = pluck(serie.data, "y");
+                    x = []; y = [];
+                    console.error("Verify your data, must be like one of these options \n" +
+                    "data = [{x: value, y: value},...,{x: value, y: value}] \n" +
+                    "or data = [[valueX, valueY],...,[valueX, valueY]]");
                 }
 
-                x.unshift("x" + serie.name);
-                y.unshift(serie.name);
+                x.unshift("x" + s.name);
+                y.unshift(s.name);
 
                 columns.push.apply(columns, [x, y]);
+
             });
 
             var data = {
@@ -80,13 +84,16 @@ angular.module("ngC3", [])
         function getPiesData(series) {
             var columns = [];
 
-            series.forEach(function (serie) {
-                var data = serie.data.map(function (el) {
-                    return el;
+            series.forEach(function (s) {
+                var data = s.data.map(function (el) {
+                    if (el instanceof Array) return el[1];
+                    else if (el instanceof Object) return el["y"];
+                    else return el;
                 });
-                data.unshift(serie.name);
+                data.unshift(s.name);
                 columns.push(data);
             });
+
             return columns;
         }
 
@@ -104,10 +111,9 @@ angular.module("ngC3", [])
                 chartElement.id = scope.chartId;
 
                 scope.$watch("[series, options]", function (changes) {
-                    changes[1] = changes[1] ? changes[1] : {};
-                    var transform = changes[1].transform ? changes[1].transform : null;
+                    changes[1] = changes[1] || {};
                     var body = {};
-                    var typeChart = changes[1].type ? changes[1].type : "other";
+                    var typeChart = changes[1].type || "line";
 
                     switch (typeChart) {
                         case "donut":
@@ -121,19 +127,19 @@ angular.module("ngC3", [])
                             break;
                         default:
                             body["data"] = getData(changes[0]);
-
+                            body.data["type"] = typeChart;
                             if (changes[1]) {
                                 merge(body, changes[1]);
-                                body.data["groups"] = changes[1].groups ? changes[1].groups : [];
-                                body.data["onclick"] = changes[1].onclick ? changes[1].onclick : function () {};
+                                body.data["groups"] =  changes[1].groups || [];
+                                body.data["onclick"] = changes[1].onclick || new Function();
                             }
                             break;
                     }
                     body["bindto"] = scope.chartId ? "#" + scope.chartId : "#chart";
                     var chart = c3.generate(body);
 
-                    if (transform) { chart.transform(transform); }
                 }, true);
             }
         }
+
     });
