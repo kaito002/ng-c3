@@ -33,7 +33,7 @@ Then go to the controller and create the JSON that the chart will use
                     series: [
                         {
                             name: "Data 1",
-                            data: [[1, 2], [3, 4], [5, 6]];
+                            data: [[1, 2], [3, 4], [5, 6]]
                         }, 
                         {
                             name: "Data 2",
