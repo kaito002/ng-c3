@@ -11,7 +11,13 @@ AngularJS [https://angularjs.org]
 ## Usage
 you can see the samples folder for more help
 
-First you must create a tag called ng-c3 with these attributes
+First you must to add the dependency to your project
+
+```javascript
+    angular.module("MyModule", ["ngC3"]);
+```
+
+Second you must create a tag called ng-c3 with these attributes
 
 ```html
 <ng-c3 chart-id="chartId" series="chart.series" options="chart.options"></ng-c3>
