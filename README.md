@@ -1,3 +1,6 @@
+# DEPRECATED
+## This package has been abandoned
+
 # ng-c3
 
 This is an angular directive to <a href="http://c3js.org" target="_blank">C3.js</a>
